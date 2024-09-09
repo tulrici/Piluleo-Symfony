@@ -6,7 +6,7 @@ use App\Repository\AdministrateurSystemeRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AdministrateurSystemeRepository::class)]
-class AdministrateurSysteme extends Utilisateurs
+class AdministrateurSysteme extends Utilisateur
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
