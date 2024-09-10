@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ordonnance{% endblock %}
+
+{% block body %}
+    <h1>Ordonnance</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ ordonnance.id }}</td>
+            </tr>
+            <tr>
+                <th>IdOrdonnance</th>
+                <td>{{ ordonnance.idOrdonnance }}</td>
+            </tr>
+            <tr>
+                <th>Posologie</th>
+                <td>{{ ordonnance.posologie }}</td>
+            </tr>
+            <tr>
+                <th>Frequence</th>
+                <td>{{ ordonnance.frequence }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_ordonnance_index') }}">back to list</a>
+
+    <a href="{{ path('app_ordonnance_edit', {'id': ordonnance.id}) }}">edit</a>
+
+    {{ include('ordonnance/_delete_form.html.twig') }}
+{% endblock %}

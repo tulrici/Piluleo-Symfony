@@ -19,8 +19,10 @@
         "symfony/mailer": "7.1.*",
         "symfony/runtime": "7.1.*",
         "symfony/security-bundle": "7.1.*",
+        "symfony/twig-bundle": "7.1.*",
         "symfony/validator": "7.1.*",
-        "symfony/yaml": "7.1.*"
+        "symfony/yaml": "7.1.*",
+        "symfonyx/dbal-clickhouse": "^1.1"
     },
     "config": {
         "allow-plugins": {
