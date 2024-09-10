@@ -38,12 +38,12 @@ class Pilulier
 
     public function getIdPilulier(): ?int
     {
-        return $this->idPilulier;
+        return $this->id;
     }
 
     public function setIdPilulier(int $id): static
     {
-        $this->idPilulier = $idPilulier;
+        $this->idPilulier = $id;
 
         return $this;
     }
