@@ -119,4 +119,14 @@ class Pilulier
 
         return $this;
     }
+    public function open(): void {
+        // TODO: send a request to the server to open the pilulier
+
+    }
+    public function close(): void {
+        // TODO: send a request to the server to close the pilulier
+    }
+    public function setDeliveryTime(): void {
+        // TODO
+    }
 }

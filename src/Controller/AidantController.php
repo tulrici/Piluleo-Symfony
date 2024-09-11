@@ -199,4 +199,18 @@ class AidantController extends AbstractController
 
         return new Response('Pilulier opened successfully.');
     }
+    public function setDeliveryPilulier(PilulierRepository $pilulierRepository, $id): Response
+    {
+        $pilulier = $pilulierRepository->find($id);
+
+        if (!$pilulier) {
+            throw $this->createNotFoundException('Pillulier not found.');
+        }
+
+        // Here you would trigger the actual hardware to open the pill dispenser
+        //TODO : Implement the open method in Pilulier entity
+        $pilulier->setDeliveryTime();  // Assuming there's a method in Pilulier that opens it
+
+        return new Response('Timer set to h1, h2, h3, h4.');
+    }
 }
