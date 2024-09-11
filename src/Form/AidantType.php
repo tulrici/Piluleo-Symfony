@@ -2,29 +2,33 @@
 
 namespace App\Form;
 
-use App\Entity\Ordonnance;
-use App\Entity\Patient;
-use App\Entity\Pilulier;
+use App\Entity\Aidant;
+use App\Entity\Notification;
+use App\Entity\Traitement;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class OrdonnanceType extends AbstractType
+class AidantType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('idOrdonnance')
-            ->add('posologie')
-            ->add('frequence')
-            ->add('patient', EntityType::class, [
-                'class' => Patient::class,
+            ->add('nom')
+            ->add('prenom')
+            ->add('email')
+            ->add('motDePasse')
+            ->add('specialisation')
+            ->add('notifications', EntityType::class, [
+                'class' => Notification::class,
                 'choice_label' => 'id',
+                'multiple' => true,
             ])
-            ->add('pilulier', EntityType::class, [
-                'class' => Pilulier::class,
+            ->add('traitement', EntityType::class, [
+                'class' => Traitement::class,
                 'choice_label' => 'id',
+                'multiple' => true,
             ])
         ;
     }
@@ -32,7 +36,7 @@ class OrdonnanceType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Ordonnance::class,
+            'data_class' => Aidant::class,
         ]);
     }
 }
