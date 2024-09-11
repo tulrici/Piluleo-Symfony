@@ -164,7 +164,20 @@ class Pilulier
             echo "An error occurred while trying to close the pilulier: " . $e->getMessage();
         }
     }
-    public function setDeliveryTime(): void {
-        // TODO
+    public function setDeliveryTime($h1, $h2, $h3, $h4): void {
+        // The Python API URL with query parameters for h1, h2, h3, h4
+        $url = "http://127.0.0.1:5000/pillbox/setDeliveryTime?h1={$h1}&h2={$h2}&h3={$h3}&h4={$h4}";
+    
+        try {
+            $response = $this->client->request('POST', $url);
+    
+            if ($response->getStatusCode() === 200) {
+                echo "Delivery times set successfully.";
+            } else {
+                echo "Failed to set delivery times. Status code: " . $response->getStatusCode();
+            }
+        } catch (\Exception $e) {
+            echo "An error occurred while trying to set the delivery times: " . $e->getMessage();
+        }
     }
 }
