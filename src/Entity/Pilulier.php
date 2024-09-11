@@ -6,10 +6,14 @@ use App\Repository\PilulierRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+
 
 #[ORM\Entity(repositoryClass: PilulierRepository::class)]
 class Pilulier
 {
+    private HttpClientInterface $client;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -30,8 +34,9 @@ class Pilulier
     #[ORM\OneToMany(targetEntity: Ordonnance::class, mappedBy: 'pilulier')]
     private Collection $ordonnance;
 
-    public function __construct()
+    public function __construct(HttpClientInterface $client)
     {
+        $this->client = $client;
         $this->notification = new ArrayCollection();
         $this->ordonnance = new ArrayCollection();
     }
@@ -119,12 +124,45 @@ class Pilulier
 
         return $this;
     }
-    public function open(): void {
-        // TODO: send a request to the server to open the pilulier
+    public function open(): void
+    {
+        // The URL for the Python API endpoint that will open the pill dispenser
+        $url = 'http://127.0.0.1:5000/pillbox/open';  // Replace with the actual Python API URL
 
+        try {
+            // Send a POST request to the Python API
+            $response = $this->client->request('POST', $url);
+
+            // Handle the response from the API
+            if ($response->getStatusCode() === 200) {
+                // Successfully triggered the opening
+                // You can log this or perform any other action here
+                echo "Pilulier opened successfully.";
+            } else {
+                // Log or handle the error based on the status code
+                echo "Failed to open the pilulier. Status code: " . $response->getStatusCode();
+            }
+        } catch (\Exception $e) {
+            // Handle any exceptions during the request
+            echo "An error occurred while trying to open the pilulier: " . $e->getMessage();
+        }
     }
-    public function close(): void {
-        // TODO: send a request to the server to close the pilulier
+
+    public function close(): void
+    {
+        $url = 'http://127.0.0.1:5000/pillbox/close';  // Replace with the actual Python API URL
+
+        try {
+            $response = $this->client->request('POST', $url);
+
+            if ($response->getStatusCode() === 200) {
+                echo "Pilulier closed successfully.";
+            } else {
+                echo "Failed to close the pilulier. Status code: " . $response->getStatusCode();
+            }
+        } catch (\Exception $e) {
+            echo "An error occurred while trying to close the pilulier: " . $e->getMessage();
+        }
     }
     public function setDeliveryTime(): void {
         // TODO
