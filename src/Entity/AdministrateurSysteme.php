@@ -9,6 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
 class AdministrateurSysteme extends Utilisateur
 {
     #[ORM\Column]
+    public static function getRole(): string
+    {
+        return 'ROLE_ADMIN';
+    }
     private ?int $idAdmin = null;
 
     public function getId(): ?int
@@ -28,3 +32,4 @@ class AdministrateurSysteme extends Utilisateur
         return $this;
     }
 }
+

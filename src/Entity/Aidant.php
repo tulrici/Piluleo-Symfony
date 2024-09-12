@@ -24,7 +24,11 @@ class Aidant extends Utilisateur
      */
     #[ORM\ManyToMany(targetEntity: Traitement::class, inversedBy: 'aidants')]
     private Collection $traitement;
-
+    
+    public static function getRole(): string
+    {
+        return 'ROLE_AIDANT';
+    }
     public function __construct()
     {
         $this->notifications = new ArrayCollection();

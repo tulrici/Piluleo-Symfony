@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord{% endblock %}
+
+{% block body %}
+    <h1>Bienvenue sur votre tableau de bord, {{ user.prenom }} {{ user.nom }}</h1>
+    
+    {# Ajoutez ici le contenu de votre tableau de bord #}
+    <p>Ceci est votre tableau de bord personnel. Vous pouvez ajouter ici les fonctionnalités dont vous avez besoin.</p>
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <p>Vous êtes connecté en tant qu'administrateur.</p>
+    {% elseif is_granted('ROLE_AIDANT') %}
+        <p>Vous êtes connecté en tant qu'aidant.</p>
+    {% elseif is_granted('ROLE_PATIENT') %}
+        <p>Vous êtes connecté en tant que patient.</p>
+    {% endif %}
+
+    {# Ajout du bouton de déconnexion #}
+    <a href="{{ path('app_logout') }}" class="btn btn-danger">Déconnexion</a>
+{% endblock %}

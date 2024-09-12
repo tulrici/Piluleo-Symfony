@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: PatientRepository::class)]
 class Patient extends Utilisateur
@@ -44,6 +45,10 @@ class Patient extends Utilisateur
     #[ORM\OneToMany(targetEntity: Traitement::class, mappedBy: 'patient')]
     private Collection $traitement;
 
+    public static function getRole(): string
+    {
+        return 'ROLE_PATIENT';
+    }
     public function __construct()
     {
         $this->ordonnance = new ArrayCollection();
@@ -54,7 +59,11 @@ class Patient extends Utilisateur
     {
         return $this->id;
     }
-
+    public function getPassword(): string
+    {
+        return $this->motDePasse;
+    }
+    
     public function getHistoriqueMedical(): ?string
     {
         return $this->HistoriqueMedical;
