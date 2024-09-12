@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
     "ROLE_AIDANT" => Aidant::class,
     "ROLE_PATIENT" => Patient::class
 ])]
-abstract class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
+class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -44,10 +44,10 @@ abstract class Utilisateur implements UserInterface, PasswordAuthenticatedUserIn
         return $this->nom;
     }
 
-    public function setNom(string $nom): static
+    public function setNom(string $nom): ?string
     {
         $this->nom = $nom;
-        return $this;
+        return $this->nom;
     }
 
     public function getPrenom(): ?string
@@ -55,10 +55,10 @@ abstract class Utilisateur implements UserInterface, PasswordAuthenticatedUserIn
         return $this->prenom;
     }
 
-    public function setPrenom(string $prenom): static
+    public function setPrenom(string $prenom): ?string
     {
         $this->prenom = $prenom;
-        return $this;
+        return $this->prenom;
     }
 
     public function getEmail(): ?string
@@ -66,27 +66,29 @@ abstract class Utilisateur implements UserInterface, PasswordAuthenticatedUserIn
         return $this->email;
     }
 
-    public function setEmail(string $email): static
+    public function setEmail(string $email): ?string
     {
         $this->email = $email;
-        return $this;
+        return $this->email;
     }
-
     public function getPassword(): string
     {
         return $this->motDePasse;
     }
+    public function getMotDePasse(): string
+    {
+        return $this->motDePasse;
+    }
 
-    public function setMotDePasse(string $motDePasse): static
+    public function setMotDePasse(string $motDePasse): ?string
     {
         $this->motDePasse = $motDePasse;
-        return $this;
+        return $this->motDePasse;
     }
 
     public function getRoles(): array
     {
-        // Le rôle est déterminé par le type d'entité
-        return [$this->getRole(), 'ROLE_USER'];
+
     }
 
     public function eraseCredentials(): void
@@ -98,6 +100,3 @@ abstract class Utilisateur implements UserInterface, PasswordAuthenticatedUserIn
     {
         return $this->email;
     }
-
-    abstract public function getRole(): string;
-}

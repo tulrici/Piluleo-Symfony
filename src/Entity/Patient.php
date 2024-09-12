@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: PatientRepository::class)]
-class Patient extends Utilisateur
+class Patient extends Utilisateur implements PasswordAuthenticatedUserInterface
 {
     #[ORM\Column(type: Types::TEXT)]
     private ?string $HistoriqueMedical = null;
@@ -45,16 +45,12 @@ class Patient extends Utilisateur
     #[ORM\OneToMany(targetEntity: Traitement::class, mappedBy: 'patient')]
     private Collection $traitement;
 
+
     public function __construct()
     {
         parent::__construct(); // Ajout de l'appel au constructeur parent
         $this->ordonnance = new ArrayCollection();
         $this->traitement = new ArrayCollection();
-    }
-
-    public function getRole(): string
-    {
-        return 'ROLE_PATIENT';
     }
 
     public function getHistoriqueMedical(): ?string
