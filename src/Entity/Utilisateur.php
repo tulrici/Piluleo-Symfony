@@ -9,11 +9,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
 #[ORM\InheritanceType("JOINED")]
-#[ORM\DiscriminatorColumn(name: "type", type: "string")]
+#[ORM\DiscriminatorColumn(name: "role", type: "string")]
 #[ORM\DiscriminatorMap([
-    "administrateur" => "AdministrateurSysteme",
-    "aidant" => "Aidant",
-    "patient" => "Patient"
+    "ROLE_ADMIN" => AdministrateurSysteme::class,
+    "ROLE_AIDANT" => Aidant::class,
+    "ROLE_PATIENT" => Patient::class
 ])]
 class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -33,8 +33,6 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     protected ?string $motDePasse = null;
-
-    // Remove the role property, as it's determined by the entity type
 
     public function getId(): ?int
     {
@@ -90,26 +88,15 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getRoles(): array
     {
-        // The role is determined by the entity type
-        $roles = [$this->getRole()];
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-        return array_unique($roles);
+
     }
 
     public function eraseCredentials(): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        // Si vous stockez des données temporaires sensibles sur l'utilisateur, effacez-les ici
     }
 
     public function getUserIdentifier(): string
     {
         return $this->email;
     }
-
-    public function getRole(): string
-    {
-        return $this->role;
-    }
-}

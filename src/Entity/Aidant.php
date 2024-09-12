@@ -26,20 +26,17 @@ class Aidant extends Utilisateur implements PasswordAuthenticatedUserInterface
      */
     #[ORM\ManyToMany(targetEntity: Traitement::class, inversedBy: 'aidants')]
     private Collection $traitement;
-    
-    public function getRole(): string
-    {
-        return 'ROLE_AIDANT';
-    }
+
     public function __construct()
     {
+        parent::__construct(); // Ajout de l'appel au constructeur parent
         $this->notifications = new ArrayCollection();
         $this->traitement = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getRole(): string
     {
-        return $this->id;
+        return 'ROLE_AIDANT';
     }
 
     public function getSpecialisation(): ?string
@@ -50,7 +47,6 @@ class Aidant extends Utilisateur implements PasswordAuthenticatedUserInterface
     public function setSpecialisation(?string $specialisation): static
     {
         $this->specialisation = $specialisation;
-
         return $this;
     }
 
@@ -68,7 +64,6 @@ class Aidant extends Utilisateur implements PasswordAuthenticatedUserInterface
             $this->notifications->add($notification);
             $notification->addAidant($this);
         }
-
         return $this;
     }
 
@@ -77,7 +72,6 @@ class Aidant extends Utilisateur implements PasswordAuthenticatedUserInterface
         if ($this->notifications->removeElement($notification)) {
             $notification->removeAidant($this);
         }
-
         return $this;
     }
 
@@ -94,14 +88,12 @@ class Aidant extends Utilisateur implements PasswordAuthenticatedUserInterface
         if (!$this->traitement->contains($traitement)) {
             $this->traitement->add($traitement);
         }
-
         return $this;
     }
 
     public function removeTraitement(Traitement $traitement): static
     {
         $this->traitement->removeElement($traitement);
-
         return $this;
     }
 }
