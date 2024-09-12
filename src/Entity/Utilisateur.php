@@ -73,8 +73,11 @@ abstract class Utilisateur implements UserInterface, PasswordAuthenticatedUserIn
         $this->email = $email;
         return $this;
     }
-
     public function getPassword(): string
+    {
+        return $this->motDePasse;
+    }
+    public function getMotDePasse(): string
     {
         return $this->motDePasse;
     }

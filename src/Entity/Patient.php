@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: PatientRepository::class)]
-class Patient extends Utilisateur
+class Patient extends Utilisateur implements PasswordAuthenticatedUserInterface
 {
     #[ORM\Column(type: Types::TEXT)]
     private ?string $HistoriqueMedical = null;
@@ -54,16 +54,10 @@ class Patient extends Utilisateur
         $this->ordonnance = new ArrayCollection();
         $this->traitement = new ArrayCollection();
     }
-
     public function getId(): ?int
     {
         return $this->id;
-    }
-    public function getPassword(): string
-    {
-        return $this->motDePasse;
-    }
-    
+    }    
     public function getHistoriqueMedical(): ?string
     {
         return $this->HistoriqueMedical;
