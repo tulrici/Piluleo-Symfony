@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Pilulier{% endblock %}
+
+{% block body %}
+    <h1>Edit Pilulier</h1>
+
+    {{ include('pilulier/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_pilulier_index') }}">back to list</a>
+
+    {{ include('pilulier/_delete_form.html.twig') }}
+{% endblock %}

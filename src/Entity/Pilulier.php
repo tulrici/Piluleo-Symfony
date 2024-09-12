@@ -39,9 +39,12 @@ class Pilulier
         $this->client = $client;
         $this->notification = new ArrayCollection();
         $this->ordonnance = new ArrayCollection();
+
+        // Set the default value of activationBoutonUrgence to false
+        $this->activationBoutonUrgence = false;
     }
 
-    public function getIdPilulier(): ?int
+    public function getId(): ?int
     {
         return $this->id;
     }
