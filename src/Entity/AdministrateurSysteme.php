@@ -8,16 +8,12 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: AdministrateurSystemeRepository::class)]
 class AdministrateurSysteme extends Utilisateur
 {
-    #[ORM\Column]
-    public static function getRole(): string
-    {
-        return 'ROLE_ADMIN';
-    }
+    #[ORM\Column(nullable: true)]
     private ?int $idAdmin = null;
 
-    public function getId(): ?int
+    public function getRole(): string
     {
-        return $this->id;
+        return 'ROLE_ADMIN';
     }
 
     public function getIdAdmin(): ?int
@@ -25,11 +21,9 @@ class AdministrateurSysteme extends Utilisateur
         return $this->idAdmin;
     }
 
-    public function setIdAdmin(int $idAdmin): static
+    public function setIdAdmin(?int $idAdmin): static
     {
         $this->idAdmin = $idAdmin;
-
         return $this;
     }
 }
-

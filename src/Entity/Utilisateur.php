@@ -9,11 +9,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
 #[ORM\InheritanceType("JOINED")]
-#[ORM\DiscriminatorColumn(name: "type", type: "string")]
+#[ORM\DiscriminatorColumn(name: "role", type: "string")]
 #[ORM\DiscriminatorMap([
-    "administrateur" => "AdministrateurSysteme",
-    "aidant" => "Aidant",
-    "patient" => "Patient"
+    "ROLE_ADMIN" => AdministrateurSysteme::class,
+    "ROLE_AIDANT" => Aidant::class,
+    "ROLE_PATIENT" => Patient::class
 ])]
 abstract class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -33,8 +33,6 @@ abstract class Utilisateur implements UserInterface, PasswordAuthenticatedUserIn
 
     #[ORM\Column(length: 255)]
     protected ?string $motDePasse = null;
-
-    // Remove the role property, as it's determined by the entity type
 
     public function getId(): ?int
     {
@@ -87,17 +85,13 @@ abstract class Utilisateur implements UserInterface, PasswordAuthenticatedUserIn
 
     public function getRoles(): array
     {
-        // The role is determined by the entity type
-        $roles = [static::getRole()];
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-        return array_unique($roles);
+        // Le rôle est déterminé par le type d'entité
+        return [$this->getRole(), 'ROLE_USER'];
     }
 
     public function eraseCredentials(): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        // Si vous stockez des données temporaires sensibles sur l'utilisateur, effacez-les ici
     }
 
     public function getUserIdentifier(): string
@@ -105,5 +99,5 @@ abstract class Utilisateur implements UserInterface, PasswordAuthenticatedUserIn
         return $this->email;
     }
 
-    abstract public static function getRole(): string;
+    abstract public function getRole(): string;
 }
