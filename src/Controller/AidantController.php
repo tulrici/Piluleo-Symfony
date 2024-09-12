@@ -193,8 +193,6 @@ class AidantController extends AbstractController
             throw $this->createNotFoundException('Pillulier not found.');
         }
 
-        // Here you would trigger the actual hardware to open the pill dispenser
-        //TODO : Implement the open method in Pilulier entity
         $pilulier->open();  // Assuming there's a method in Pilulier that opens it
 
         return new Response('Pilulier opened successfully.');
