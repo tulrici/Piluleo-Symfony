@@ -15,3 +15,4 @@ class AdministrateurSysteme extends Utilisateur implements PasswordAuthenticated
     {
         return 'ROLE_ADMIN';
     }
+}

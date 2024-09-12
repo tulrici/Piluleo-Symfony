@@ -88,7 +88,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getRoles(): array
     {
-
+	return ['ROLE_USER'];
     }
 
     public function eraseCredentials(): void
@@ -100,3 +100,4 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->email;
     }
+}
