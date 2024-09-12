@@ -45,7 +45,7 @@ class Patient extends Utilisateur implements PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Traitement::class, mappedBy: 'patient')]
     private Collection $traitement;
 
-    public static function getRole(): string
+    public function getRole(): string
     {
         return 'ROLE_PATIENT';
     }

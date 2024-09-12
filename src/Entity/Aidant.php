@@ -27,7 +27,7 @@ class Aidant extends Utilisateur implements PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Traitement::class, inversedBy: 'aidants')]
     private Collection $traitement;
     
-    public static function getRole(): string
+    public function getRole(): string
     {
         return 'ROLE_AIDANT';
     }

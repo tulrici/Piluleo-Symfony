@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[ORM\Entity(repositoryClass: AdministrateurSystemeRepository::class)]
 class AdministrateurSysteme extends Utilisateur implements PasswordAuthenticatedUserInterface
 {
-    public static function getRole(): string
+    public function getRole(): string
     {
         return 'ROLE_ADMIN';
     }

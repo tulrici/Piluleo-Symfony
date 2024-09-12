@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
     "aidant" => "Aidant",
     "patient" => "Patient"
 ])]
-abstract class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
+class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -46,10 +46,10 @@ abstract class Utilisateur implements UserInterface, PasswordAuthenticatedUserIn
         return $this->nom;
     }
 
-    public function setNom(string $nom): static
+    public function setNom(string $nom): ?string
     {
         $this->nom = $nom;
-        return $this;
+        return $this->nom;
     }
 
     public function getPrenom(): ?string
@@ -57,10 +57,10 @@ abstract class Utilisateur implements UserInterface, PasswordAuthenticatedUserIn
         return $this->prenom;
     }
 
-    public function setPrenom(string $prenom): static
+    public function setPrenom(string $prenom): ?string
     {
         $this->prenom = $prenom;
-        return $this;
+        return $this->prenom;
     }
 
     public function getEmail(): ?string
@@ -68,10 +68,10 @@ abstract class Utilisateur implements UserInterface, PasswordAuthenticatedUserIn
         return $this->email;
     }
 
-    public function setEmail(string $email): static
+    public function setEmail(string $email): ?string
     {
         $this->email = $email;
-        return $this;
+        return $this->email;
     }
     public function getPassword(): string
     {
@@ -82,16 +82,16 @@ abstract class Utilisateur implements UserInterface, PasswordAuthenticatedUserIn
         return $this->motDePasse;
     }
 
-    public function setMotDePasse(string $motDePasse): static
+    public function setMotDePasse(string $motDePasse): ?string
     {
         $this->motDePasse = $motDePasse;
-        return $this;
+        return $this->motDePasse;
     }
 
     public function getRoles(): array
     {
         // The role is determined by the entity type
-        $roles = [static::getRole()];
+        $roles = [$this->getRole()];
         // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
         return array_unique($roles);
@@ -108,5 +108,8 @@ abstract class Utilisateur implements UserInterface, PasswordAuthenticatedUserIn
         return $this->email;
     }
 
-    abstract public static function getRole(): string;
+    public function getRole(): string
+    {
+        return $this->role;
+    }
 }
