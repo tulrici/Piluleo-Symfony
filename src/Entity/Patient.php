@@ -7,9 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: PatientRepository::class)]
-class Patient extends Utilisateur
+class Patient extends Utilisateur implements PasswordAuthenticatedUserInterface
 {
     #[ORM\Column(type: Types::TEXT)]
     private ?string $HistoriqueMedical = null;
@@ -44,15 +45,12 @@ class Patient extends Utilisateur
     #[ORM\OneToMany(targetEntity: Traitement::class, mappedBy: 'patient')]
     private Collection $traitement;
 
+
     public function __construct()
     {
+        parent::__construct(); // Ajout de l'appel au constructeur parent
         $this->ordonnance = new ArrayCollection();
         $this->traitement = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getHistoriqueMedical(): ?string
@@ -63,7 +61,6 @@ class Patient extends Utilisateur
     public function setHistoriqueMedical(string $HistoriqueMedical): static
     {
         $this->HistoriqueMedical = $HistoriqueMedical;
-
         return $this;
     }
 
@@ -75,7 +72,6 @@ class Patient extends Utilisateur
     public function setAllergies(?array $allergies): static
     {
         $this->allergies = $allergies;
-
         return $this;
     }
 
@@ -87,7 +83,6 @@ class Patient extends Utilisateur
     public function setAdressePostale(string $adressePostale): static
     {
         $this->adressePostale = $adressePostale;
-
         return $this;
     }
 
@@ -99,7 +94,6 @@ class Patient extends Utilisateur
     public function setCodePostal(string $CodePostal): static
     {
         $this->CodePostal = $CodePostal;
-
         return $this;
     }
 
@@ -111,7 +105,6 @@ class Patient extends Utilisateur
     public function setVille(string $ville): static
     {
         $this->ville = $ville;
-
         return $this;
     }
 
@@ -123,7 +116,6 @@ class Patient extends Utilisateur
     public function setPays(string $pays): static
     {
         $this->pays = $pays;
-
         return $this;
     }
 
@@ -135,7 +127,6 @@ class Patient extends Utilisateur
     public function setPilulier(?Pilulier $pilulier): static
     {
         $this->pilulier = $pilulier;
-
         return $this;
     }
 
@@ -153,19 +144,16 @@ class Patient extends Utilisateur
             $this->ordonnance->add($ordonnance);
             $ordonnance->setPatient($this);
         }
-
         return $this;
     }
 
     public function removeOrdonnance(Ordonnance $ordonnance): static
     {
         if ($this->ordonnance->removeElement($ordonnance)) {
-            // set the owning side to null (unless already changed)
             if ($ordonnance->getPatient() === $this) {
                 $ordonnance->setPatient(null);
             }
         }
-
         return $this;
     }
 
@@ -183,19 +171,16 @@ class Patient extends Utilisateur
             $this->traitement->add($traitement);
             $traitement->setPatient($this);
         }
-
         return $this;
     }
 
     public function removeTraitement(Traitement $traitement): static
     {
         if ($this->traitement->removeElement($traitement)) {
-            // set the owning side to null (unless already changed)
             if ($traitement->getPatient() === $this) {
                 $traitement->setPatient(null);
             }
         }
-
         return $this;
     }
 }

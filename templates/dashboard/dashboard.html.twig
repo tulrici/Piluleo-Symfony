@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1>Bienvenue sur votre tableau de bord, {{ user.prenom }} {{ user.nom }}</h1>
+    
+    {% if isAdmin %}
+        <div class="mb-4">
+            <h2>Administration</h2>
+            <a href="{{ path('app_register') }}" class="btn btn-primary">Créer un nouvel utilisateur</a>
+        </div>
+    {% endif %}
+
+    {% if isAidant or isAdmin %}
+        <div class="mb-4">
+            <h2>Gestion des ordonnances</h2>
+            <a href="{{ path('app_ordonnance_index') }}" class="btn btn-secondary">Liste des ordonnances</a>
+            <a href="{{ path('app_ordonnance_new') }}" class="btn btn-primary">Nouvelle ordonnance</a>
+        </div>
+
+        <div class="mb-4">
+            <h2>Gestion des patients</h2>
+            <a href="{{ path('app_patient_index') }}" class="btn btn-secondary">Liste des patients</a>
+            <a href="{{ path('app_patient_new') }}" class="btn btn-primary">Nouveau patient</a>
+        </div>
+    {% endif %}
+
+    {% if isPatient %}
+        <div class="mb-4">
+            <h2>Mes ordonnances</h2>
+            <a href="{{ path('app_ordonnance_index') }}" class="btn btn-secondary">Voir mes ordonnances</a>
+        </div>
+    {% endif %}
+
+    {# Affichage du rôle de l'utilisateur #}
+    {% if isAdmin %}
+        <p>Vous êtes connecté en tant qu'administrateur.</p>
+    {% elseif isAidant %}
+        <p>Vous êtes connecté en tant qu'aidant.</p>
+    {% elseif isPatient %}
+        <p>Vous êtes connecté en tant que patient.</p>
+    {% endif %}
+
+    {# Bouton de déconnexion #}
+    <a href="{{ path('app_logout') }}" class="btn btn-danger mt-3">Déconnexion</a>
+</div>
+{% endblock %}

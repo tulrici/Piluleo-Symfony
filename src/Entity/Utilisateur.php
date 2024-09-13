@@ -4,16 +4,18 @@ namespace App\Entity;
 
 use App\Repository\UtilisateurRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
 #[ORM\InheritanceType("JOINED")]
-#[ORM\DiscriminatorColumn(name: "type", type: "string")]
+#[ORM\DiscriminatorColumn(name: "role", type: "string")]
 #[ORM\DiscriminatorMap([
-    "administrateur" => "AdministrateurSysteme",
-    "aidant" => "Aidant",
-    "patient" => "Patient"
+    "ROLE_ADMIN" => AdministrateurSysteme::class,
+    "ROLE_AIDANT" => Aidant::class,
+    "ROLE_PATIENT" => Patient::class
 ])]
-abstract class Utilisateur
+class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -26,7 +28,7 @@ abstract class Utilisateur
     #[ORM\Column(length: 255)]
     protected ?string $prenom = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     protected ?string $email = null;
 
     #[ORM\Column(length: 255)]
@@ -42,10 +44,10 @@ abstract class Utilisateur
         return $this->nom;
     }
 
-    public function setNom(string $nom): static
+    public function setNom(string $nom): ?string
     {
         $this->nom = $nom;
-        return $this;
+        return $this->nom;
     }
 
     public function getPrenom(): ?string
@@ -53,10 +55,10 @@ abstract class Utilisateur
         return $this->prenom;
     }
 
-    public function setPrenom(string $prenom): static
+    public function setPrenom(string $prenom): ?string
     {
         $this->prenom = $prenom;
-        return $this;
+        return $this->prenom;
     }
 
     public function getEmail(): ?string
@@ -64,20 +66,38 @@ abstract class Utilisateur
         return $this->email;
     }
 
-    public function setEmail(string $email): static
+    public function setEmail(string $email): ?string
     {
         $this->email = $email;
-        return $this;
+        return $this->email;
     }
-
-    public function getMotDePasse(): ?string
+    public function getPassword(): string
+    {
+        return $this->motDePasse;
+    }
+    public function getMotDePasse(): string
     {
         return $this->motDePasse;
     }
 
-    public function setMotDePasse(string $motDePasse): static
+    public function setMotDePasse(string $motDePasse): ?string
     {
         $this->motDePasse = $motDePasse;
-        return $this;
+        return $this->motDePasse;
+    }
+
+    public function getRoles(): array
+    {
+	return ['ROLE_USER'];
+    }
+
+    public function eraseCredentials(): void
+    {
+        // Si vous stockez des données temporaires sensibles sur l'utilisateur, effacez-les ici
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->email;
     }
 }

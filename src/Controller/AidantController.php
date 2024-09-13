@@ -193,10 +193,33 @@ class AidantController extends AbstractController
             throw $this->createNotFoundException('Pillulier not found.');
         }
 
-        // Here you would trigger the actual hardware to open the pill dispenser
-        //TODO : Implement the open method in Pilulier entity
         $pilulier->open();  // Assuming there's a method in Pilulier that opens it
 
         return new Response('Pilulier opened successfully.');
+    }
+    public function setDeliveryPilulier(PilulierRepository $pilulierRepository, Request $request, $id): Response
+    {
+        // Find the pilulier by id
+        $pilulier = $pilulierRepository->find($id);
+    
+        if (!$pilulier) {
+            throw $this->createNotFoundException('Pillulier not found.');
+        }
+    
+        // Get h1, h2, h3, h4 from the request (assuming they're passed via POST or GET)
+        $h1 = $request->get('h1');
+        $h2 = $request->get('h2');
+        $h3 = $request->get('h3');
+        $h4 = $request->get('h4');
+    
+        if (!$h1 || !$h2 || !$h3 || !$h4) {
+            // If any time parameter is missing, return an error response
+            return new Response('Missing required time parameters', Response::HTTP_BAD_REQUEST);
+        }
+    
+        // Call the setDeliveryTime method in the Pilulier entity, passing the time values
+        $pilulier->setDeliveryTime($h1, $h2, $h3, $h4); // Assuming this method is properly implemented
+    
+        return new Response('Timer set to h1, h2, h3, h4.');
     }
 }

@@ -4,27 +4,15 @@ namespace App\Entity;
 
 use App\Repository\AdministrateurSystemeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+
 
 #[ORM\Entity(repositoryClass: AdministrateurSystemeRepository::class)]
-class AdministrateurSysteme extends Utilisateur
+class AdministrateurSysteme extends Utilisateur implements PasswordAuthenticatedUserInterface
 {
-    #[ORM\Column]
-    private ?int $idAdmin = null;
 
-    public function getId(): ?int
+    public function getRole(): string
     {
-        return $this->id;
-    }
-
-    public function getIdAdmin(): ?int
-    {
-        return $this->idAdmin;
-    }
-
-    public function setIdAdmin(int $idAdmin): static
-    {
-        $this->idAdmin = $idAdmin;
-
-        return $this;
+        return 'ROLE_ADMIN';
     }
 }
