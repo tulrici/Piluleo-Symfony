@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Pilulier;
 use App\Entity\Utilisateur;
 use App\Form\UtilisateurType;
 use App\Repository\UtilisateurRepository;
@@ -102,22 +103,23 @@ class AdminController extends AbstractController
     #[Route('/assign-role/{id}', name: 'admin_assign_role')]
     public function assignRole(Request $request, Utilisateur $user): Response
     {
-        // Implement role assignment logic here
-        // You might want to create a form for this
+        $this->$user->setRole($request->get('role'));
+        return $this->redirectToRoute('admin_dashboard');
+
     }
 
-    #[Route('/raspberry-pi/reboot', name: 'admin_raspberry_pi_reboot')]
-    public function rebootRaspberryPi(): Response
+    #[Route('/raspberry-pi/{id}/reboot', name: 'admin_raspberry_pi_reboot')]
+    public function rebootRaspberryPi(Request $request, Pilulier $pilulier): Response
     {
-        // Implement Raspberry Pi reboot logic here
-        // This might involve making an API call to the Raspberry Pi
+        $this->$pilulier->reboot($request->get('id'));
+        return $this->redirectToRoute('admin_dashboard');
     }
 
-    #[Route('/raspberry-pi/config', name: 'admin_raspberry_pi_config')]
-    public function accessRaspberryPiConfig(): Response
+    #[Route('/raspberry-pi/{id}/config', name: 'admin_raspberry_pi_config')]
+    public function accessRaspberryPiConfig(Request $request, Pilulier $pilulier): Response
     {
-        // Implement logic to access Raspberry Pi config files
-        // This might involve making an API call to the Raspberry Pi
+        $this->$pilulier->reboot($request->get('id'));
+        return $this->redirectToRoute('admin_dashboard');
     }
 
     private function generatePassword(): string
