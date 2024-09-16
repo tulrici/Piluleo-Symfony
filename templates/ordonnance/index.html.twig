@@ -1,39 +1,93 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Ordonnance index{% endblock %}
+{% block title %}Piluleo - Liste des ordonnances{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+{% endblock %}
 
 {% block body %}
-    <h1>Ordonnance index</h1>
+<body class="bg-gray-100 dark:bg-gray-900">
+  <header class="text-gray-400 bg-orange-400 dark:bg-black dark:border-b sticky top-0 left-0 right-0 w-full z-50">
+    <div class="max-w-screen-xl mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+      <a href="{{ path('app_home') }}" class="flex title-font font-medium items-center text-white mb-4 md:mb-0">
+        <span class="ml-3 text-2xl">Piluleo</span>
+      </a>
+      <nav class="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
+      </nav>
+    
+      <div class="flex justify-end ml-4 md:ml-14 boutonDarkMode">
+        <label class="swap swap-rotate">
+          <input type="checkbox" class="theme-controller" value="dark" />
+          <svg class="swap-on fill-current w-10 h-10 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M5.64,17l-.71.71a1,1,0,0,0,0,1.41,1,1,0,0,0,1.41,0l.71-.71A1,1,0,0,0,5.64,17ZM5,12a1,1,0,0,0-1-1H3a1,1,0,0,0,0,2H4A1,1,0,0,0,5,12Zm7-7a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4A1,1,0,0,0,12,5ZM5.64,7.05a1,1,0,0,0,.7.29,1,1,0,0,0,.71-.29,1,1,0,0,0,0-1.41l-.71-.71A1,1,0,0,0,4.93,6.34Zm12,.29a1,1,0,0,0,.7-.29l.71-.71a1,1,0,1,0-1.41-1.41L17,5.64a1,1,0,0,0,0,1.41A1,1,0,0,0,17.66,7.34ZM21,11H20a1,1,0,0,0,0,2h1a1,1,0,0,0,0-2Zm-9,8a1,1,0,0,0-1,1v1a1,1,0,0,0,2,0V20A1,1,0,0,0,12,19ZM18.36,17A1,1,0,0,0,17,18.36l.71.71a1,1,0,0,0,1.41,0,1,1,0,0,0,0-1.41ZM12,6.5A5.5,5.5,0,1,0,17.5,12,5.51,5.51,0,0,0,12,6.5Zm0,9A3.5,3.5,0,1,1,15.5,12,3.5,3.5,0,0,1,12,15.5Z"/>
+          </svg>
+          <svg class="swap-off fill-current w-10 h-10 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M21.64,13a1,1,0,0,0-1.05-.14,8.05,8.05,0,0,1-3.37.73A8.15,8.15,0,0,1,9.08,5.49a8.59,8.59,0,0,1,.25-2A1,1,0,0,0,8,2.36,10.14,10.14,0,1,0,22,14.05,1,1,0,0,0,21.64,13Zm-9.5,6.69A8.14,8.14,0,0,1,7.08,5.22v.27A10.15,10.15,0,0,0,17.22,15.63a9.79,9.79,0,0,0,2.1-.22A8.11,8.11,0,0,1,12.14,19.73Z"/>
+          </svg>
+        </label>
+      </div>
+    </div>
+  </header>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>IdOrdonnance</th>
-                <th>Posologie</th>
-                <th>Frequence</th>
-                <th>actions</th>
-            </tr>
+  <main class="container mx-auto px-4 py-8">
+    <div class="overflow-x-auto">
+      <div class="titre">
+        <h1 class="text-4xl font-bold text-center mb-10 text-gray-800 dark:text-white">Liste des ordonnances</h1>
+      </div>
+      <table class="table-auto w-full bg-white shadow-md rounded-xl overflow-hidden dark:bg-gray-800 dark:text-white">
+        <thead class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+          <tr>
+            <th class="px-4 py-2">ID</th>
+            <th class="px-4 py-2">Id Ordonnance</th>
+            <th class="px-4 py-2">Posologie</th>
+            <th class="px-4 py-2">Fréquence</th>
+            <th class="px-4 py-2">Actions</th>
+          </tr>
         </thead>
-        <tbody>
-        {% for ordonnance in ordonnances %}
-            <tr>
-                <td>{{ ordonnance.id }}</td>
-                <td>{{ ordonnance.idOrdonnance }}</td>
-                <td>{{ ordonnance.posologie }}</td>
-                <td>{{ ordonnance.frequence }}</td>
-                <td>
-                    <a href="{{ path('app_ordonnance_show', {'id': ordonnance.id}) }}">show</a>
-                    <a href="{{ path('app_ordonnance_edit', {'id': ordonnance.id}) }}">edit</a>
-                </td>
+        <tbody class="text-gray-600 dark:text-gray-300">
+          {% for ordonnance in ordonnances %}
+            <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
+              <td class="border px-4 py-2">{{ ordonnance.id }}</td>
+              <td class="border px-4 py-2">{{ ordonnance.idOrdonnance }}</td>
+              <td class="border px-4 py-2">{{ ordonnance.posologie }}</td>
+              <td class="border px-4 py-2">{{ ordonnance.frequence }}</td>
+              <td class="border px-4 py-2">
+                <a href="{{ path('app_ordonnance_show', {'id': ordonnance.id}) }}" class="text-blue-500 hover:text-blue-700 mr-2">Voir</a>
+                <a href="{{ path('app_ordonnance_edit', {'id': ordonnance.id}) }}" class="text-green-500 hover:text-green-700">Modifier</a>
+              </td>
             </tr>
-        {% else %}
+          {% else %}
             <tr>
-                <td colspan="5">no records found</td>
+              <td colspan="5" class="border px-4 py-2 text-center">Aucune ordonnance trouvée</td>
             </tr>
-        {% endfor %}
+          {% endfor %}
         </tbody>
-    </table>
+      </table>
+    </div>
+    <div class="mt-6 text-center">
+      <a href="{{ path('app_ordonnance_new') }}" class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
+        Créer nouvelle ordonnance
+      </a>
+    </div>
+  </main>
 
-    <a href="{{ path('app_ordonnance_new') }}">Create new</a>
+  <script>
+    // Script pour gérer le mode sombre
+    document.addEventListener("DOMContentLoaded", function () {
+      const themeController = document.querySelector(".theme-controller");
+      themeController.addEventListener("change", function () {
+        if (this.checked) {
+          document.documentElement.classList.add("dark");
+          document.documentElement.setAttribute("data-theme", "dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      });
+    });
+  </script>
+</body>
 {% endblock %}
