@@ -9,8 +9,10 @@
     {% if isAdmin %}
         <div class="mb-4">
             <h2>Administration</h2>
+            <a href="{{ path('app_user_index') }}" class="btn btn-secondary">Liste des utilisateurs</a>
             <a href="{{ path('app_register') }}" class="btn btn-primary">Créer un nouvel utilisateur</a>
         </div>
+        
     {% endif %}
 
     {% if isAidant or isAdmin %}
@@ -25,6 +27,11 @@
             <a href="{{ path('app_patient_index') }}" class="btn btn-secondary">Liste des patients</a>
             <a href="{{ path('app_patient_new') }}" class="btn btn-primary">Nouveau patient</a>
         </div>
+        {# Gestion des pilluliers pour les Admin et les Aidants#}
+        <div class="mb-4">
+            <h2>Gestion des piluliers</h2>
+            <a href="{{ path('app_pilulier_index') }}" class="btn btn-secondary">Liste des piluliers</a>
+            <a href="{{ path('app_pilulier_new') }}" class="btn btn-primary">Nouveau pilulier</a>
     {% endif %}
 
     {% if isPatient %}
