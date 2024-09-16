@@ -1,53 +1,125 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Patient index{% endblock %}
+{% block title %}Liste des patients{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+      tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        backgroundColor: {
+          dark: "black",
+        },
+      
+      },
+    },
+  };
+  
+  document.addEventListener("DOMContentLoaded", function () {
+    document
+      .querySelector(".theme-controller")
+      .addEventListener("change", function () {
+        if (this.checked) {
+          document.documentElement.classList.add("dark");
+          document.documentElement.setAttribute("data-theme", "black");
+        } else {
+          document.documentElement.classList.remove("dark");
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      });
+  });
+    </script>
+{% endblock %}
 
 {% block body %}
-    <h1>Patient index</h1>
+<body class="bg-gray-100 dark:bg-black">
+    <header class="text-gray-400 bg-orange-400 dark:bg-black dark:border-b sticky top-0 left-0 right-0 w-full z-50">
+        <div class="max-w-screen-xl mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+            <a href="{{ path('app_patient_index') }}" class="flex title-font font-medium items-center text-white mb-4 md:mb-0">
+                <span class="ml-3 text-2xl">Piluleo</span>
+            </a>
+            <nav class="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
+            </nav>
+            <div class="flex justify-end ml-4 md:ml-14 boutonDarkMode">
+                <label class="swap swap-rotate">
+                    <input type="checkbox" class="theme-controller" value="dark" />
+                    <svg class="swap-on fill-current w-10 h-10 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M5.64,17l-.71.71a1,1,0,0,0,0,1.41,1,1,0,0,0,1.41,0l.71-.71A1,1,0,0,0,5.64,17ZM5,12a1,1,0,0,0-1-1H3a1,1,0,0,0,0,2H4A1,1,0,0,0,5,12Zm7-7a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4A1,1,0,0,0,12,5ZM5.64,7.05a1,1,0,0,0,.7.29,1,1,0,0,0,.71-.29,1,1,0,0,0,0-1.41l-.71-.71A1,1,0,0,0,4.93,6.34Zm12,.29a1,1,0,0,0,.7-.29l.71-.71a1,1,0,1,0-1.41-1.41L17,5.64a1,1,0,0,0,0,1.41A1,1,0,0,0,17.66,7.34ZM21,11H20a1,1,0,0,0,0,2h1a1,1,0,0,0,0-2Zm-9,8a1,1,0,0,0-1,1v1a1,1,0,0,0,2,0V20A1,1,0,0,0,12,19ZM18.36,17A1,1,0,0,0,17,18.36l.71.71a1,1,0,0,0,1.41,0,1,1,0,0,0,0-1.41ZM12,6.5A5.5,5.5,0,1,0,17.5,12,5.51,5.51,0,0,0,12,6.5Zm0,9A3.5,3.5,0,1,1,15.5,12,3.5,3.5,0,0,1,12,15.5Z"/>
+                    </svg>
+                    <svg class="swap-off fill-current w-10 h-10 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M21.64,13a1,1,0,0,0-1.05-.14,8.05,8.05,0,0,1-3.37.73A8.15,8.15,0,0,1,9.08,5.49a8.59,8.59,0,0,1,.25-2A1,1,0,0,0,8,2.36,10.14,10.14,0,1,0,22,14.05,1,1,0,0,0,21.64,13Zm-9.5,6.69A8.14,8.14,0,0,1,7.08,5.22v.27A10.15,10.15,0,0,0,17.22,15.63a9.79,9.79,0,0,0,2.1-.22A8.11,8.11,0,0,1,12.14,19.73Z"/>
+                    </svg>
+                </label>
+            </div>
+        </div>
+    </header>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>Prenom</th>
-                <th>Email</th>
-                <th>MotDePasse</th>
-                <th>HistoriqueMedical</th>
-                <th>Allergies</th>
-                <th>AdressePostale</th>
-                <th>CodePostal</th>
-                <th>Ville</th>
-                <th>Pays</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for patient in patients %}
-            <tr>
-                <td>{{ patient.id }}</td>
-                <td>{{ patient.nom }}</td>
-                <td>{{ patient.prenom }}</td>
-                <td>{{ patient.email }}</td>
-                <td>{{ patient.motDePasse }}</td>
-                <td>{{ patient.HistoriqueMedical }}</td>
-                <td>{{ patient.allergies ? patient.allergies|json_encode : '' }}</td>
-                <td>{{ patient.adressePostale }}</td>
-                <td>{{ patient.CodePostal }}</td>
-                <td>{{ patient.ville }}</td>
-                <td>{{ patient.pays }}</td>
-                <td>
-                    <a href="{{ path('app_patient_show', {'id': patient.id}) }}">show</a>
-                    <a href="{{ path('app_patient_edit', {'id': patient.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="12">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_patient_new') }}">Create new</a>
+    <main class="container mx-auto px-4 py-8 dark:bg-black">
+        <div class="overflow-x-auto ">
+            <div class="titre">
+                <h1 class="text-4xl font-bold text-center mb-10">Liste des patients</h1>
+            </div>
+            <table class="table-auto w-full bg-white dark:bg-black shadow-md rounded-xl overflow-hidden dark:border">
+                <thead class="bg-gray-200 dark:bg-black text-gray-700">
+                    <tr>
+                        <th class="px-4 py-2 dark:text-white">ID</th>
+                        <th class="px-4 py-2 dark:text-white">Nom</th>
+                        <th class="px-4 py-2 dark:text-white">Prénom</th>
+                        <th class="px-4 py-2 dark:text-white">Email</th>
+                        <th class="px-4 py-2 dark:text-white">Mot de passe</th>
+                        <th class="px-4 py-2 dark:text-white">Historique médical</th>
+                        <th class="px-4 py-2 dark:text-white">Allergie</th>
+                        <th class="px-4 py-2 dark:text-white">Adresse postale</th>
+                        <th class="px-4 py-2 dark:text-white">Code postal</th>
+                        <th class="px-4 py-2 dark:text-white">Ville</th>
+                        <th class="px-4 py-2 dark:text-white">Pays</th>
+                        <th class="px-4 py-2 dark:text-white">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-600">
+                {% for patient in patients %}
+                    <tr class="hover:bg-gray-100 dark:bg-black">
+                        <td class="border px-4 py-2 dark:text-white">{{ patient.id }}</td>
+                        <td class="border px-4 py-2 dark:text-white">{{ patient.nom }}</td>
+                        <td class="border px-4 py-2 dark:text-white">{{ patient.prenom }}</td>
+                        <td class="border px-4 py-2 dark:text-white">{{ patient.email }}</td>
+                        <td class="border px-4 py-2 dark:text-white">{{ patient.motDePasse }}</td>
+                        <td class="border px-4 py-2 dark:text-white">{{ patient.HistoriqueMedical }}</td>
+                        <td class="border px-4 py-2 dark:text-white">{{ patient.allergies ? patient.allergies|json_encode : '' }}</td>
+                        <td class="border px-4 py-2 dark:text-white">{{ patient.adressePostale }}</td>
+                        <td class="border px-4 py-2 dark:text-white">{{ patient.CodePostal }}</td>
+                        <td class="border px-4 py-2 dark:text-white">{{ patient.ville }}</td>
+                        <td class="border px-4 py-2 dark:text-white">{{ patient.pays }}</td>
+                        <td class="border px-4 py-2 dark:text-white">
+                            <div class="flex justify-end space-x-2">
+                                <a href="{{ path('app_patient_show', {'id': patient.id}) }}" class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-1 px-2 rounded">Montrer</a>
+                                <a href="{{ path('app_patient_edit', {'id': patient.id}) }}" class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-1 px-2 rounded">Éditer</a>
+                                <!-- Add delete functionality if needed -->
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="12" class="border px-4 py-2 dark:text-white text-center">Aucun patient trouvé</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-6 text-center">
+            <a href="{{ path('app_patient_new') }}" class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
+                Créer nouveau patient
+            </a>
+        </div>
+    </main>
+</body>
 {% endblock %}

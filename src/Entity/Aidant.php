@@ -29,7 +29,6 @@ class Aidant extends Utilisateur implements PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
-        parent::__construct(); // Ajout de l'appel au constructeur parent
         $this->notifications = new ArrayCollection();
         $this->traitement = new ArrayCollection();
     }

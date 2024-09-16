@@ -34,6 +34,8 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     protected ?string $motDePasse = null;
 
+    // No more role field here
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,10 +46,10 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->nom;
     }
 
-    public function setNom(string $nom): ?string
+    public function setNom(string $nom): self
     {
         $this->nom = $nom;
-        return $this->nom;
+        return $this;
     }
 
     public function getPrenom(): ?string
@@ -55,10 +57,10 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->prenom;
     }
 
-    public function setPrenom(string $prenom): ?string
+    public function setPrenom(string $prenom): self
     {
         $this->prenom = $prenom;
-        return $this->prenom;
+        return $this;
     }
 
     public function getEmail(): ?string
@@ -66,38 +68,53 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->email;
     }
 
-    public function setEmail(string $email): ?string
+    public function setEmail(string $email): self
     {
         $this->email = $email;
-        return $this->email;
+        return $this;
     }
-    public function getPassword(): string
-    {
-        return $this->motDePasse;
-    }
+
     public function getMotDePasse(): string
     {
         return $this->motDePasse;
     }
 
-    public function setMotDePasse(string $motDePasse): ?string
+    public function setMotDePasse(string $motDePasse): self
     {
         $this->motDePasse = $motDePasse;
-        return $this->motDePasse;
+        return $this;
     }
 
+    // This method will return roles based on the discriminator column
     public function getRoles(): array
     {
-	return ['ROLE_USER'];
+        $roles = [$this->getRole()];
+        $roles[] = 'ROLE_USER'; // Guarantee every user at least has ROLE_USER
+        return array_unique($roles);
+    }
+
+    // Get role from discriminator column
+    public function getRole(): string
+    {
+        // The discriminator column will handle the role
+        return $this instanceof AdministrateurSysteme ? 'ROLE_ADMIN' :
+               ($this instanceof Aidant ? 'ROLE_AIDANT' :
+               ($this instanceof Patient ? 'ROLE_PATIENT' : 'ROLE_USER'));
     }
 
     public function eraseCredentials(): void
     {
-        // Si vous stockez des données temporaires sensibles sur l'utilisateur, effacez-les ici
+        // Clear sensitive data if any
     }
 
     public function getUserIdentifier(): string
     {
         return $this->email;
     }
+
+    public function getPassword(): string
+    {
+        return $this->motDePasse;
+    }
 }
+
