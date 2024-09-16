@@ -100,14 +100,14 @@ final class PilulierController extends AbstractController
     #[Route('/pilulier/open/{id}', name: 'app_pilulier_open')]
     public function open(Pilulier $pilulier): Response
     {
-        $this->sendRequestToPythonAPI('http://127.0.0.1:5000/pillbox/open');
+        $this->sendRequestToPythonAPI('http://10.20.0.54:5000/pillbox/open');
         return new Response("Pilulier with ID: {$pilulier->getId()} opened successfully.");
     }
 
     #[Route('/pilulier/close/{id}', name: 'app_pilulier_close')]
     public function close(Pilulier $pilulier): Response
     {
-        $this->sendRequestToPythonAPI('http://127.0.0.1:5000/pillbox/close');
+        $this->sendRequestToPythonAPI('http://10.20.0.54:5000/pillbox/close');
         return new Response("Pilulier with ID: {$pilulier->getId()} closed successfully.");
     }
 
@@ -115,28 +115,28 @@ final class PilulierController extends AbstractController
     public function changeHours(Pilulier $pilulier): Response
     {
         // Add logic to change delivery hours here
-        $this->sendRequestToPythonAPI('http://127.0.0.1:5000/pillbox/change-hours');
+        $this->sendRequestToPythonAPI('http://10.20.0.54:5000/pillbox/change-hours');
         return new Response("Pilulier with ID: {$pilulier->getId()} changed delivery hours.");
     }
 
     #[Route('/pilulier/power/{id}', name: 'app_pilulier_power')]
     public function power(Pilulier $pilulier): Response
     {
-        $this->sendRequestToPythonAPI('http://127.0.0.1:5000/pillbox/power');
+        $this->sendRequestToPythonAPI('http://10.20.0.54:5000/pillbox/power');
         return new Response("Pilulier with ID: {$pilulier->getId()} power toggled.");
     }
 
     #[Route('/pilulier/remote/{id}', name: 'app_pilulier_remote')]
     public function remote(Pilulier $pilulier): Response
     {
-        $this->sendRequestToPythonAPI('http://127.0.0.1:5000/pillbox/remote');
+        $this->sendRequestToPythonAPI('http://10.20.0.54:5000/pillbox/remote');
         return new Response("Pilulier with ID: {$pilulier->getId()} remotely controlled.");
     }
 
     #[Route('/pilulier/test-motor/{id}', name: 'app_pilulier_test_motor')]
     public function testMotor(Pilulier $pilulier): Response
     {
-        $this->sendRequestToPythonAPI('http://127.0.0.1:5000/pillbox/test-motor');
+        $this->sendRequestToPythonAPI('http://10.20.0.54:5000/pillbox/test-motor');
         return new Response("Motor of Pilulier with ID: {$pilulier->getId()} tested.");
     }
 

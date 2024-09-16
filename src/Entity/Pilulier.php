@@ -18,10 +18,10 @@ class Pilulier
     #[ORM\Column]
     private ?bool $activationBoutonUrgence = null;
 
-    #[ORM\OneToMany(targetEntity: Notification::class, mappedBy: 'pilulier')]
+    #[ORM\OneToMany(mappedBy: 'pilulier', targetEntity: Notification::class)]
     private Collection $notification;
 
-    #[ORM\OneToMany(targetEntity: Ordonnance::class, mappedBy: 'pilulier')]
+    #[ORM\OneToMany(mappedBy: 'pilulier', targetEntity: Ordonnance::class)]
     private Collection $ordonnance;
 
     public function __construct()
@@ -50,89 +50,127 @@ class Pilulier
 
     // Functions to manage notifications and ordonnances omitted for brevity
 
-    // API Communication Methods
+    // API Communication Methods using cURL directly
+
     public function open(): void
     {
-        $url = 'http://127.0.0.1:5000/pillbox/open';
+        $url = 'http://10.20.0.54:5000/pillbox/open';
 
-        try {
-            $response = $this->client->request('POST', $url);
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-            if ($response->getStatusCode() === 200) {
+        $response = curl_exec($ch);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        if (curl_errno($ch)) {
+            echo 'An error occurred while trying to open the pilulier: ' . curl_error($ch);
+        } else {
+            if ($http_code === 200) {
                 echo "Pilulier opened successfully.";
             } else {
-                echo "Failed to open the pilulier. Status code: " . $response->getStatusCode();
+                echo "Failed to open the pilulier. Status code: " . $http_code;
             }
-        } catch (\Exception $e) {
-            echo "An error occurred while trying to open the pilulier: " . $e->getMessage();
         }
+
+        curl_close($ch);
     }
 
     public function close(): void
     {
-        $url = 'http://127.0.0.1:5000/pillbox/close';
+        $url = 'http://10.20.0.54:5000/pillbox/close';
 
-        try {
-            $response = $this->client->request('POST', $url);
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-            if ($response->getStatusCode() === 200) {
+        $response = curl_exec($ch);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        if (curl_errno($ch)) {
+            echo 'An error occurred while trying to close the pilulier: ' . curl_error($ch);
+        } else {
+            if ($http_code === 200) {
                 echo "Pilulier closed successfully.";
             } else {
-                echo "Failed to close the pilulier. Status code: " . $response->getStatusCode();
+                echo "Failed to close the pilulier. Status code: " . $http_code;
             }
-        } catch (\Exception $e) {
-            echo "An error occurred while trying to close the pilulier: " . $e->getMessage();
         }
+
+        curl_close($ch);
     }
 
     public function power(): void
     {
-        $url = 'http://127.0.0.1:5000/pillbox/power';
+        $url = 'http://10.20.0.54:5000/pillbox/power';
 
-        try {
-            $response = $this->client->request('POST', $url);
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-            if ($response->getStatusCode() === 200) {
+        $response = curl_exec($ch);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        if (curl_errno($ch)) {
+            echo 'An error occurred while trying to toggle power: ' . curl_error($ch);
+        } else {
+            if ($http_code === 200) {
                 echo "Pilulier power toggled successfully.";
             } else {
-                echo "Failed to toggle power. Status code: " . $response->getStatusCode();
+                echo "Failed to toggle power. Status code: " . $http_code;
             }
-        } catch (\Exception $e) {
-            echo "An error occurred while trying to toggle power: " . $e->getMessage();
         }
+
+        curl_close($ch);
     }
 
     public function remote(): void
     {
-        $url = 'http://127.0.0.1:5000/pillbox/remote';
+        $url = 'http://10.20.0.54:5000/pillbox/remote';
 
-        try {
-            $response = $this->client->request('POST', $url);
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        // Optionally, set headers if needed
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
 
-            if ($response->getStatusCode() === 200) {
+        $response = curl_exec($ch);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        if (curl_errno($ch)) {
+            echo 'An error occurred while trying to trigger remote control: ' . curl_error($ch);
+        } else {
+            if ($http_code === 200) {
                 echo "Pilulier remote control triggered successfully.";
             } else {
-                echo "Failed to trigger remote control. Status code: " . $response->getStatusCode();
+                echo "Failed to trigger remote control. Status code: " . $http_code;
             }
-        } catch (\Exception $e) {
-            echo "An error occurred while trying to trigger remote control: " . $e->getMessage();
         }
+
+        curl_close($ch);
     }
 
     public function testMotor(): void
     {
-        $url = 'http://127.0.0.1:5000/pillbox/test-motor';
+        $url = 'http://10.20.0.54:5000/pillbox/test-motor';
 
-        try {
-            $response = $this->client->request('POST', $url);
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-            if ($response->getStatusCode() === 200) {
+        $response = curl_exec($ch);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        if (curl_errno($ch)) {
+            echo 'An error occurred while trying to test the motor: ' . curl_error($ch);
+        } else {
+            if ($http_code === 200) {
                 echo "Motor test completed successfully.";
             } else {
-                echo "Failed to test motor. Status code: " . $response->getStatusCode();
+                echo "Failed to test motor. Status code: " . $http_code;
             }
-        } catch (\Exception $e) {
-            echo "An error occurred while trying to test the motor: " . $e->getMessage();
         }
+
+        curl_close($ch);
     }
 }
