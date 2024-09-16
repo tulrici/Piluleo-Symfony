@@ -14,9 +14,14 @@
             <tr>
                 <th>ActivationBoutonUrgence</th>
                 <td>{{ pilulier.activationBoutonUrgence ? 'Yes' : 'No' }}</td>
+                
+            </tr>
+            <tr>
+                <th><button class="btn"><a href="{{ path('app_pilulier_command', {'id': pilulier.id}) }}">Commander le Pillulier</a></button></th>
             </tr>
         </tbody>
     </table>
+
 
     <a href="{{ path('app_pilulier_index') }}">back to list</a>
 

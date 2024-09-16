@@ -53,6 +53,11 @@ class Patient extends Utilisateur implements PasswordAuthenticatedUserInterface
         $this->traitement = new ArrayCollection();
     }
 
+    public function getRole(): string
+    {
+        return 'ROLE_PATIENT';
+    }
+
     public function getHistoriqueMedical(): ?string
     {
         return $this->HistoriqueMedical;
