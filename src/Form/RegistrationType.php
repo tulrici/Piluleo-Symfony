@@ -49,7 +49,6 @@ class RegistrationType extends AbstractType
                 'choices' => [
                     'Administrateur' => 'ROLE_ADMIN',
                     'Aidant' => 'ROLE_AIDANT',
-                    'Patient' => 'ROLE_PATIENT',
                 ],
                 'label' => 'Rôle',
             ])

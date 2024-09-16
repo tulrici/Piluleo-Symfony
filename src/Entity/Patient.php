@@ -48,7 +48,6 @@ class Patient extends Utilisateur implements PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
-        parent::__construct(); // Ajout de l'appel au constructeur parent
         $this->ordonnance = new ArrayCollection();
         $this->traitement = new ArrayCollection();
     }
