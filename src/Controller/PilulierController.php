@@ -5,25 +5,25 @@ namespace App\Controller;
 use App\Entity\Pilulier;
 use App\Form\PilulierType;
 use App\Repository\PilulierRepository;
+use App\Service\PilulierApiService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 #[Route('/pilulier')]
 final class PilulierController extends AbstractController
 {
-    private HttpClientInterface $httpClient;
+    private PilulierApiService $pilulierApiService;
     private EntityManagerInterface $entityManager;
 
-    public function __construct(HttpClientInterface $httpClient, EntityManagerInterface $entityManager)
+    public function __construct(PilulierApiService $pilulierApiService, EntityManagerInterface $entityManager)
     {
-        $this->httpClient = $httpClient;
+        $this->pilulierApiService = $pilulierApiService;
         $this->entityManager = $entityManager;
     }
-    
+
     #[Route(name: 'app_pilulier_index', methods: ['GET'])]
     public function index(PilulierRepository $pilulierRepository): Response
     {
@@ -81,7 +81,7 @@ final class PilulierController extends AbstractController
     #[Route('/{id}', name: 'app_pilulier_delete', methods: ['POST'])]
     public function delete(Request $request, Pilulier $pilulier): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$pilulier->getId(), $request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $pilulier->getId(), $request->get('_token'))) {
             $this->entityManager->remove($pilulier);
             $this->entityManager->flush();
         }
@@ -97,62 +97,77 @@ final class PilulierController extends AbstractController
         ]);
     }
 
-    #[Route('/pilulier/open/{id}', name: 'app_pilulier_open')]
+    #[Route('/open/{id}', name: 'app_pilulier_open')]
     public function open(Pilulier $pilulier): Response
     {
-        $this->sendRequestToPythonAPI('http://10.20.0.54:5000/pillbox/open');
-        return new Response("Pilulier with ID: {$pilulier->getId()} opened successfully.");
+        $success = $this->pilulierApiService->open();
+
+        if ($success) {
+            return new Response("Pilulier with ID: {$pilulier->getId()} opened successfully.");
+        } else {
+            return new Response("Failed to open the pilulier with ID: {$pilulier->getId()}.", Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
-    #[Route('/pilulier/close/{id}', name: 'app_pilulier_close')]
+    #[Route('/close/{id}', name: 'app_pilulier_close')]
     public function close(Pilulier $pilulier): Response
     {
-        $this->sendRequestToPythonAPI('http://10.20.0.54:5000/pillbox/close');
-        return new Response("Pilulier with ID: {$pilulier->getId()} closed successfully.");
+        $success = $this->pilulierApiService->close();
+
+        if ($success) {
+            return new Response("Pilulier with ID: {$pilulier->getId()} closed successfully.");
+        } else {
+            return new Response("Failed to close the pilulier with ID: {$pilulier->getId()}.", Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
-    #[Route('/pilulier/change-hours/{id}', name: 'app_pilulier_change_hours')]
+    #[Route('/change-hours/{id}', name: 'app_pilulier_change_hours')]
     public function changeHours(Pilulier $pilulier): Response
     {
-        // Add logic to change delivery hours here
-        $this->sendRequestToPythonAPI('http://10.20.0.54:5000/pillbox/change-hours');
-        return new Response("Pilulier with ID: {$pilulier->getId()} changed delivery hours.");
+        // Implement the changeHours logic using the service if applicable
+        // Example:
+        $success = $this->pilulierApiService->changeHours(); // Assuming you add this method
+
+        if ($success) {
+            return new Response("Pilulier with ID: {$pilulier->getId()} changed delivery hours.");
+        } else {
+            return new Response("Failed to change delivery hours for pilulier with ID: {$pilulier->getId()}.", Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
-    #[Route('/pilulier/power/{id}', name: 'app_pilulier_power')]
+    #[Route('/power/{id}', name: 'app_pilulier_power')]
     public function power(Pilulier $pilulier): Response
     {
-        $this->sendRequestToPythonAPI('http://10.20.0.54:5000/pillbox/power');
-        return new Response("Pilulier with ID: {$pilulier->getId()} power toggled.");
+        $success = $this->pilulierApiService->power();
+
+        if ($success) {
+            return new Response("Pilulier with ID: {$pilulier->getId()} power toggled.");
+        } else {
+            return new Response("Failed to toggle power for pilulier with ID: {$pilulier->getId()}.", Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
-    #[Route('/pilulier/remote/{id}', name: 'app_pilulier_remote')]
+    #[Route('/remote/{id}', name: 'app_pilulier_remote')]
     public function remote(Pilulier $pilulier): Response
     {
-        $this->sendRequestToPythonAPI('http://10.20.0.54:5000/pillbox/remote');
-        return new Response("Pilulier with ID: {$pilulier->getId()} remotely controlled.");
+        $success = $this->pilulierApiService->remote();
+
+        if ($success) {
+            return new Response("Pilulier with ID: {$pilulier->getId()} remotely controlled.");
+        } else {
+            return new Response("Failed to remotely control pilulier with ID: {$pilulier->getId()}.", Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
-    #[Route('/pilulier/test-motor/{id}', name: 'app_pilulier_test_motor')]
+    #[Route('/test-motor/{id}', name: 'app_pilulier_test_motor')]
     public function testMotor(Pilulier $pilulier): Response
     {
-        $this->sendRequestToPythonAPI('http://10.20.0.54:5000/pillbox/test-motor');
-        return new Response("Motor of Pilulier with ID: {$pilulier->getId()} tested.");
-    }
+        $success = $this->pilulierApiService->testMotor();
 
-    /**
-     * Utility method to send an HTTP POST request to the Python API.
-     */
-    private function sendRequestToPythonAPI(string $url): void
-    {
-        try {
-            $response = $this->httpClient->request('POST', $url);
-
-            if ($response->getStatusCode() !== 200) {
-                echo "Failed to send the request to the API. Status code: " . $response->getStatusCode();
-            }
-        } catch (\Exception $e) {
-            echo "An error occurred while trying to communicate with the Python API: " . $e->getMessage();
+        if ($success) {
+            return new Response("Motor of Pilulier with ID: {$pilulier->getId()} tested.");
+        } else {
+            return new Response("Failed to test motor for pilulier with ID: {$pilulier->getId()}.", Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }
