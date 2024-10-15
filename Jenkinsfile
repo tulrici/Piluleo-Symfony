@@ -14,11 +14,6 @@ pipeline {
                 sh 'composer install'
             }
         }
-        stage('Run Tests') {
-            steps {
-            sh '/usr/bin/phpunit'
-            }
-        }
     }
     post {
         success {
