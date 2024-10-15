@@ -5,7 +5,7 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'github-token', variable: 'GITHUB_TOKEN')]) {
                     git branch: 'main', 
-                        url: 'https://$GITHUB_TOKEN@https://github.com/tulrici/Piluleo-Symfony.git'
+                        url: 'https://$GITHUB_TOKEN@github.com/tulrici/Piluleo-Symfony.git'
                 }
             }
         }
