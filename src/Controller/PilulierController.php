@@ -148,14 +148,14 @@ final class PilulierController extends AbstractController
     }
 
     #[Route('/remote/{id}', name: 'app_pilulier_remote')]
-    public function remote(Pilulier $pilulier): Response
+    public function remote($id): Response
     {
         $success = $this->pilulierApiService->remote();
 
         if ($success) {
-            return new Response("Pilulier with ID: {$pilulier->getId()} remotely controlled.");
+            return new Response("Pilulier with ID: {$id} remotely controlled.");
         } else {
-            return new Response("Failed to remotely control pilulier with ID: {$pilulier->getId()}.", Response::HTTP_INTERNAL_SERVER_ERROR);
+            return new Response("Failed to remotely control pilulier with ID: {$id}.", Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
