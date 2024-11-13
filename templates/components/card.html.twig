@@ -1,0 +1,15 @@
+<div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg rounded-lg transition-all duration-300 hover:shadow-xl">
+    <div class="p-6">
+        <div class="flex items-center mb-4">
+            <i class="{{ icon }} text-{{ color }} text-3xl"></i>
+            <h2 class="ml-3 text-xl font-semibold text-gray-900 dark:text-white">{{ title }}</h2>
+        </div>
+        <div class="space-y-3">
+            {% for link in links %}
+                <a href="{{ link.path }}" class="block text-{{ color }} hover:text-{{ hoverColor }} dark:text-{{ darkColor }} dark:hover:text-{{ darkHoverColor }} transition-colors duration-200">
+                    <i class="{{ link.icon }} mr-2"></i>{{ link.label }}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
