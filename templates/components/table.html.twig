@@ -1,0 +1,45 @@
+<table class="table-auto w-full bg-white dark:bg-black shadow-md rounded-xl overflow-hidden dark:border">
+    <thead class="bg-gray-200 dark:bg-black text-gray-700">
+        <tr>
+            <th class="px-4 py-2 dark:text-white">ID</th>
+            <th class="px-4 py-2 dark:text-white">Nom</th>
+            <th class="px-4 py-2 dark:text-white">Prénom</th>
+            <th class="px-4 py-2 dark:text-white">Email</th>
+            <th class="px-4 py-2 dark:text-white">Mot de passe</th>
+            <th class="px-4 py-2 dark:text-white">Historique médical</th>
+            <th class="px-4 py-2 dark:text-white">Allergie</th>
+            <th class="px-4 py-2 dark:text-white">Adresse postale</th>
+            <th class="px-4 py-2 dark:text-white">Code postal</th>
+            <th class="px-4 py-2 dark:text-white">Ville</th>
+            <th class="px-4 py-2 dark:text-white">Pays</th>
+            <th class="px-4 py-2 dark:text-white">Actions</th>
+        </tr>
+    </thead>
+    <tbody class="text-gray-600">
+        {% for patient in patients %}
+            <tr class="hover:bg-gray-100 dark:bg-black">
+                <td class="border px-4 py-2 dark:text-white">{{ patient.id }}</td>
+                <td class="border px-4 py-2 dark:text-white">{{ patient.nom }}</td>
+                <td class="border px-4 py-2 dark:text-white">{{ patient.prenom }}</td>
+                <td class="border px-4 py-2 dark:text-white">{{ patient.email }}</td>
+                <td class="border px-4 py-2 dark:text-white">{{ patient.motDePasse }}</td>
+                <td class="border px-4 py-2 dark:text-white">{{ patient.HistoriqueMedical }}</td>
+                <td class="border px-4 py-2 dark:text-white">{{ patient.allergies ? patient.allergies|json_encode : '' }}</td>
+                <td class="border px-4 py-2 dark:text-white">{{ patient.adressePostale }}</td>
+                <td class="border px-4 py-2 dark:text-white">{{ patient.CodePostal }}</td>
+                <td class="border px-4 py-2 dark:text-white">{{ patient.ville }}</td>
+                <td class="border px-4 py-2 dark:text-white">{{ patient.pays }}</td>
+                <td class="border px-4 py-2 dark:text-white">
+                    <div class="flex justify-end space-x-2">
+                        <a href="{{ path('app_patient_show', {'id': patient.id}) }}" class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-1 px-2 rounded">Montrer</a>
+                        <a href="{{ path('app_patient_edit', {'id': patient.id}) }}" class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-1 px-2 rounded">Éditer</a>
+                    </div>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12" class="border px-4 py-2 dark:text-white text-center">Aucun patient trouvé</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

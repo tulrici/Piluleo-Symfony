@@ -2,6 +2,12 @@
 
 {% block title %}Edit Ordonnance{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+{% endblock %}
+
 {% block body %}
     <h1>Edit Ordonnance</h1>
 
