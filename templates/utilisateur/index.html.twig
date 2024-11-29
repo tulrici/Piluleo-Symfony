@@ -1,41 +1,59 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Utilisateur index{% endblock %}
+{% block title %}Piluleo - Liste des utilisateurs{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+{% endblock %}
 
 {% block body %}
-    <h1>Utilisateur index</h1>
+<body class="bg-gray-100 dark:bg-gray-900">
+    
+    <main class="container mx-auto px-4 py-8">
+        <div class="overflow-x-auto">
+            <div class="titre">
+                <h1 class="text-4xl font-bold text-center mb-10 text-gray-800 dark:text-white">Liste des utilisateurs</h1>
+            </div>
+            <table class="table-auto w-full bg-white shadow-md rounded-xl overflow-hidden dark:bg-gray-800 dark:text-white">
+                <thead class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+                    <tr>
+                        <th class="px-4 py-2">ID</th>
+                        <th class="px-4 py-2">Nom</th>
+                        <th class="px-4 py-2">Prénom</th>
+                        <th class="px-4 py-2">Email</th>
+                        <th class="px-4 py-2">Rôle</th>
+                        <th class="px-4 py-2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-600 dark:text-gray-300">
+                    {% for utilisateur in utilisateurs %}
+                        <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
+                            <td class="border px-4 py-2">{{ utilisateur.id }}</td>
+                            <td class="border px-4 py-2">{{ utilisateur.nom }}</td>
+                            <td class="border px-4 py-2">{{ utilisateur.prenom }}</td>
+                            <td class="border px-4 py-2">{{ utilisateur.email }}</td>
+                            <td class="border px-4 py-2">{{ utilisateur.role }}</td>
+                            <td class="border px-4 py-2">
+                                <a href="{{ path('app_utilisateur_show', {'id': utilisateur.id}) }}" class="text-blue-500 hover:text-blue-700 mr-2">Voir</a>
+                                <a href="{{ path('app_utilisateur_edit', {'id': utilisateur.id}) }}" class="text-green-500 hover:text-green-700">Modifier</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="border px-4 py-2 text-center">Aucun utilisateur trouvé</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-6 text-center">
+            <a href="{{ path('app_utilisateur_new') }}" class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
+                Créer nouvel utilisateur
+            </a>
+        </div>
+    </main>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>Prenom</th>
-                <th>Email</th>
-                <th>MotDePasse</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for utilisateur in utilisateurs %}
-            <tr>
-                <td>{{ utilisateur.id }}</td>
-                <td>{{ utilisateur.nom }}</td>
-                <td>{{ utilisateur.prenom }}</td>
-                <td>{{ utilisateur.email }}</td>
-                <td>{{ utilisateur.motDePasse }}</td>
-                <td>
-                    <a href="{{ path('app_utilisateur_show', {'id': utilisateur.id}) }}">show</a>
-                    <a href="{{ path('app_utilisateur_edit', {'id': utilisateur.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_utilisateur_new') }}">Create new</a>
+</body>
 {% endblock %}

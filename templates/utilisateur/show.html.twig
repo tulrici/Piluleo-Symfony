@@ -2,37 +2,60 @@
 
 {% block title %}Utilisateur{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet" />
+{% endblock %}
+
 {% block body %}
-    <h1>Utilisateur</h1>
+<body class="bg-gray-100 dark:bg-gray-900 min-h-screen flex flex-col">
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ utilisateur.id }}</td>
-            </tr>
-            <tr>
-                <th>Nom</th>
-                <td>{{ utilisateur.nom }}</td>
-            </tr>
-            <tr>
-                <th>Prenom</th>
-                <td>{{ utilisateur.prenom }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ utilisateur.email }}</td>
-            </tr>
-            <tr>
-                <th>MotDePasse</th>
-                <td>{{ utilisateur.motDePasse }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <main class="flex-grow w-full px-4 sm:px-6 lg:px-8 py-8 bg-gray-100 dark:bg-black">
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-12 text-center">
+            Détails de l'utilisateur
+        </h1>
 
-    <a href="{{ path('app_utilisateur_index') }}">back to list</a>
+        <div class="max-w-4xl mx-auto bg-white shadow-md rounded-lg overflow-hidden dark:bg-gray-800 dark:text-white">
+            <div class="p-6">
+                <table class="table-auto w-full">
+                    <tbody>
+                        <tr class="border-b border-gray-200 dark:border-gray-700">
+                            <th class="text-left py-2 px-4 text-gray-600 dark:text-gray-300">ID</th>
+                            <td class="py-2 px-4">{{ utilisateur.id }}</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 dark:border-gray-700">
+                            <th class="text-left py-2 px-4 text-gray-600 dark:text-gray-300">Nom</th>
+                            <td class="py-2 px-4">{{ utilisateur.nom }}</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 dark:border-gray-700">
+                            <th class="text-left py-2 px-4 text-gray-600 dark:text-gray-300">Prénom</th>
+                            <td class="py-2 px-4">{{ utilisateur.prenom }}</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 dark:border-gray-700">
+                            <th class="text-left py-2 px-4 text-gray-600 dark:text-gray-300">Email</th>
+                            <td class="py-2 px-4">{{ utilisateur.email }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-left py-2 px-4 text-gray-600 dark:text-gray-300">Rôle</th>
+                            <td class="py-2 px-4">{{ utilisateur.roles | join(', ') }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-    <a href="{{ path('app_utilisateur_edit', {'id': utilisateur.id}) }}">edit</a>
+        <div class="mt-6 text-center">
+            <a href="{{ path('app_utilisateur_index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mr-2">
+                Retour à la liste
+            </a>
+            <a href="{{ path('app_utilisateur_edit', {'id': utilisateur.id}) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Modifier
+            </a>
+            {{ include('utilisateur/_delete_form.html.twig') }}
+        </div>
+    </main>
 
-    {{ include('utilisateur/_delete_form.html.twig') }}
+</body>
 {% endblock %}

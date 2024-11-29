@@ -1,31 +1,50 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Pilulier{% endblock %}
+{% block title %}Détails du Pilulier{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet" />
+{% endblock %}
 
 {% block body %}
-    <h1>Pilulier</h1>
+<body class="bg-gray-100 dark:bg-gray-900 min-h-screen flex flex-col">
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ pilulier.id }}</td>
-            </tr>
-            <tr>
-                <th>ActivationBoutonUrgence</th>
-                <td>{{ pilulier.activationBoutonUrgence ? 'Yes' : 'No' }}</td>
-                
-            </tr>
-            <tr>
-                <th><button class="btn"><a href="{{ path('app_pilulier_command', {'id': pilulier.id}) }}">Commander le Pillulier</a></button></th>
-            </tr>
-        </tbody>
-    </table>
+    <main class="flex-grow w-full px-4 sm:px-6 lg:px-8 py-8 bg-gray-100 dark:bg-black">
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-12 text-center">Détails du Pilulier</h1>
 
+        <div class="max-w-4xl mx-auto bg-white shadow-md rounded-lg overflow-hidden dark:bg-gray-800 dark:text-white">
+            <div class="p-6">
+                <table class="table-auto w-full">
+                    <tbody>
+                        <tr class="border-b border-gray-200 dark:border-gray-700">
+                            <th class="text-left py-2 px-4 text-gray-600 dark:text-gray-300">ID</th>
+                            <td class="py-2 px-4">{{ pilulier.id }}</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 dark:border-gray-700">
+                            <th class="text-left py-2 px-4 text-gray-600 dark:text-gray-300">Activation Bouton d'Urgence</th>
+                            <td class="py-2 px-4">{{ pilulier.activationBoutonUrgence ? 'Oui' : 'Non' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-    <a href="{{ path('app_pilulier_index') }}">back to list</a>
+        <div class="mt-6 text-center">
+            <a href="{{ path('app_pilulier_index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mr-2">
+                Retour à la liste
+            </a>
+            <a href="{{ path('app_pilulier_edit', {'id': pilulier.id}) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Modifier
+            </a>
+            <a href="{{ path('app_pilulier_command', {'id': pilulier.id}) }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                Commander le Pilulier
+            </a>
+            {{ include('pilulier/_delete_form.html.twig') }}
+        </div>
+    </main>
 
-    <a href="{{ path('app_pilulier_edit', {'id': pilulier.id}) }}">edit</a>
-
-    {{ include('pilulier/_delete_form.html.twig') }}
+</body>
 {% endblock %}

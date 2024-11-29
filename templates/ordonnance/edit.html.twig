@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Ordonnance{% endblock %}
+{% block title %}Modifier Ordonnance{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -8,12 +8,89 @@
     <script src="https://cdn.tailwindcss.com"></script>
 {% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/locale/fr.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/plugin/updateLocale.js"></script>
+{% endblock %}
+
 {% block body %}
-    <h1>Edit Ordonnance</h1>
+<body class="bg-orange-500 dark:bg-black">
 
-    {{ include('ordonnance/_form.html.twig', {'button_label': 'Update'}) }}
+  <section class="min-h-screen bg-orange-500 dark:bg-black flex flex-col items-center justify-center p-4">
+    <div class="w-full max-w-4xl bg-orange-500 dark:bg-black rounded-lg border border-black dark:border-white p-8">
+      <h1 class="text-xl font-bold text-white mb-4 text-center dark:text-white current-time"></h1>
+      <h2 class="text-3xl font-bold text-white mb-10 text-center dark:text-white">Modifier Ordonnance</h2>
+      
+      {{ form_start(form, {'attr': {'id': 'editForm', 'class': 'grid grid-cols-2 gap-4'}}) }}
+        {{ form_widget(form.idOrdonnance, {'attr': {'class': 'col-span-2 p-3 rounded text-lg dark:text-white font-bold', 'placeholder': 'Id Ordonnance'}}) }}
+        {{ form_widget(form.posologie, {'attr': {'class': 'col-span-2 p-3 rounded text-lg dark:text-white font-bold', 'placeholder': 'Posologie'}}) }}
+        {{ form_widget(form.frequence, {'attr': {'class': 'col-span-2 p-3 rounded text-lg dark:text-white font-bold', 'placeholder': 'Fréquence'}}) }}
+        
+        {% if form.patient is defined %}
+            {{ form_widget(form.patient, {'attr': {'class': 'col-span-2 p-3 rounded text-lg dark:text-white font-bold'}}) }}
+        {% endif %}
+        {% if form.pilulier is defined %}
+            {{ form_widget(form.pilulier, {'attr': {'class': 'col-span-2 p-3 rounded text-lg dark:text-white font-bold'}}) }}
+        {% endif %}
+        
+        <div class="col-span-2 flex justify-center">
+          <button type="submit" class="bg-black dark:bg-white text-white dark:text-black font-bold py-3 px-6 w-40 rounded text-xl">
+            Valider
+          </button>
+        </div>
+      {{ form_end(form) }}
+      <p class="text-xl font-bold text-white mt-5 text-center dark:text-white js-texte"></p>
+    </div>
+  </section>
 
-    <a href="{{ path('app_ordonnance_index') }}">back to list</a>
+  <script>
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                backgroundColor: {
+                    dark: "black",
+                },
+            },
+        },
+    };
+    
+    document.addEventListener("DOMContentLoaded", function () {
+        document
+            .querySelector(".theme-controller")
+            .addEventListener("change", function () {
+                if (this.checked) {
+                    document.documentElement.classList.add("dark");
+                    document.documentElement.setAttribute("data-theme", "black");
+                } else {
+                    document.documentElement.classList.remove("dark");
+                    document.documentElement.setAttribute("data-theme", "light");
+                }
+            });
 
-    {{ include('ordonnance/_delete_form.html.twig') }}
+        dayjs.locale('fr');
+        dayjs.extend(window.dayjs_plugin_updateLocale);
+        dayjs.updateLocale('fr', {
+            formats: {
+                LLL: 'dddd D MMMM YYYY'
+            }
+        });
+
+        function updateTime() {
+            const date = dayjs();
+            const currentTimeElement = document.querySelector('.current-time');
+            if (currentTimeElement) {
+                currentTimeElement.innerHTML = `
+                    <span class="date">${date.format('dddd D MMMM YYYY, HH:mm:ss').toUpperCase()}</span>
+                `;
+            }
+        }
+
+        setInterval(updateTime, 1000);
+        updateTime();
+    });
+  </script>
+</body>
 {% endblock %}
