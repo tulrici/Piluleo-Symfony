@@ -1,13 +1,70 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Utilisateur{% endblock %}
+{% block title %}Modifier Utilisateur{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+{% endblock %}
 
 {% block body %}
-    <h1>Edit Utilisateur</h1>
+<body class="bg-orange-500 dark:bg-black">
+    <section class="min-h-screen bg-orange-500 dark:bg-black flex flex-col items-center justify-center p-4">
+        <div class="w-full max-w-4xl bg-orange-500 dark:bg-black rounded-lg border border-black dark:border-white p-8">
+            <h1 class="text-xl font-bold text-white mb-4 text-center dark:text-white current-time"></h1>
+            <h2 class="text-3xl font-bold text-white mb-10 text-center dark:text-white">Modifier Utilisateur</h2>
+            
+            {{ include('utilisateur/_form.html.twig', {
+                'button_label': 'Mettre à jour',
+                'attr': {'id': 'editForm', 'class': 'grid grid-cols-2 gap-4'}
+            }) }}
 
-    {{ include('utilisateur/_form.html.twig', {'button_label': 'Update'}) }}
+            <div class="mt-6 text-center">
+                <a href="{{ path('app_utilisateur_index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded text-xl">
+                    Retour à la liste
+                </a>
+            </div>
 
-    <a href="{{ path('app_utilisateur_index') }}">back to list</a>
+            <div class="mt-4 text-center">
+                {{ include('utilisateur/_delete_form.html.twig') }}
+            </div>
+        </div>
+    </section>
 
-    {{ include('utilisateur/_delete_form.html.twig') }}
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    backgroundColor: {
+                        dark: "black",
+                    },
+                },
+            },
+        };
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const currentTimeElement = document.querySelector('.current-time');
+
+            function updateTime() {
+                const date = new Date();
+                currentTimeElement.innerHTML = `
+                    <span class="date">${date.toLocaleString('fr-FR', {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit'
+                    })}</span>
+                `;
+            }
+
+            setInterval(updateTime, 1000);
+            updateTime();
+        });
+    </script>
+</body>
 {% endblock %}
