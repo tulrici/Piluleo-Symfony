@@ -3,7 +3,7 @@ function applyTheme(isDark) {
     const htmlElement = document.documentElement;
     if (isDark) {
         htmlElement.classList.add("dark");
-        htmlElement.setAttribute("data-theme", "black");
+        htmlElement.setAttribute("data-theme", "dark");
     } else {
         htmlElement.classList.remove("dark");
         htmlElement.setAttribute("data-theme", "light");
@@ -14,15 +14,16 @@ function applyTheme(isDark) {
 function initializeTheme(themeToggle) {
     // Check if a theme is saved in localStorage
     const savedTheme = localStorage.getItem("theme");
+    const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
-    // Apply saved theme or default to light
+    // Apply saved theme or fall back to system preference
     if (savedTheme) {
         applyTheme(savedTheme === "dark");
         themeToggle.checked = savedTheme === "dark"; // Ensure the toggle state matches the theme
     } else {
-        // Default to light mode if no saved theme
-        applyTheme(false);
-        localStorage.setItem("theme", "light");
+        applyTheme(systemPrefersDark);
+        themeToggle.checked = systemPrefersDark;
+        localStorage.setItem("theme", systemPrefersDark ? "dark" : "light");
     }
 
     // Add an event listener to the toggle

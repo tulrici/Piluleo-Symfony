@@ -1,22 +1,20 @@
 /** @type {import('tailwindcss').Config} */
-
 module.exports = {
   content: [
     "./assets/**/*.js",
     "./templates/**/*.html.twig",
     "./public/scripts/**/*.js",
- 
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundColor: {
+        dark: "#000", // Adjust colors as needed
+      },
+    },
   },
-  plugins: [
-    require('daisyui'),
-   
-  ],
+  darkMode: "class", // Enabling class-based dark mode
+  plugins: [require("daisyui")],
   daisyui: {
-    themes: [ "dark","light",]
+    themes: ["light", "dark"], // Predefined DaisyUI themes
   },
- darkMode: 'class',
-}
-
+};
